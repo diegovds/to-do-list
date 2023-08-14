@@ -17,6 +17,19 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  todos     Todo[]
 
   @@map("users")
+}
+
+model Todo {
+  id        String   @id @default(uuid())
+  content   String
+  priority  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("todos")
 }
