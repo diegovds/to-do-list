@@ -1,19 +1,12 @@
 import cors from '@fastify/cors'
 import jwt from '@fastify/jwt'
+import 'dotenv/config'
 import fastify from 'fastify'
 import bcrypt from 'fastify-bcrypt'
-
-import { configDotenv } from 'dotenv'
-import path from 'path'
 import { authRoutes } from '../src/routes/auth'
 import { todosRoute } from '../src/routes/todos'
 
-const app = fastify({ logger: true })
-const envFilePath = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env'
-
-configDotenv({
-  path: path.resolve(__dirname, envFilePath),
-})
+const app = fastify()
 
 app.register(cors, {
   origin: true,
