@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 
-export async function usersRoute(app: FastifyInstance) {
+export async function authRoutes(app: FastifyInstance) {
   app.post('/users', async (request, reply) => {
     const bodySchema = z.object({
       name: z.string().optional(),

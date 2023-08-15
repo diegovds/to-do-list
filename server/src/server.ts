@@ -3,7 +3,7 @@ import jwt from '@fastify/jwt'
 import 'dotenv/config'
 import fastfy from 'fastify'
 import bcrypt from 'fastify-bcrypt'
-import { usersRoute } from './routes/users'
+import { authRoutes } from './routes/auth'
 
 const app = fastfy()
 
@@ -20,7 +20,7 @@ app.register(jwt, {
   secret: process.env.JWT_SECRET_KEY as string,
 })
 
-app.register(usersRoute)
+app.register(authRoutes)
 
 app
   .listen({
