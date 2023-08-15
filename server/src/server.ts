@@ -4,6 +4,7 @@ import 'dotenv/config'
 import fastfy from 'fastify'
 import bcrypt from 'fastify-bcrypt'
 import { authRoutes } from './routes/auth'
+import { todosRoute } from './routes/todos'
 
 const app = fastfy()
 
@@ -21,6 +22,7 @@ app.register(jwt, {
 })
 
 app.register(authRoutes)
+app.register(todosRoute)
 
 app
   .listen({
