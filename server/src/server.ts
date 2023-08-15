@@ -1,12 +1,26 @@
+import cors from '@fastify/cors'
+import jwt from '@fastify/jwt'
+import 'dotenv/config'
 import fastfy from 'fastify'
-import { prisma } from './libs/prisma'
+import bcrypt from 'fastify-bcrypt'
+import { usersRoute } from './routes/users'
 
 const app = fastfy()
-app.get('/users', () => {
-  const users = prisma.user.findMany()
 
-  return users
+app.register(cors, {
+  origin: true,
+  /** origin: ['http://localhost:3000'], */
 })
+
+app.register(bcrypt, {
+  saltWorkFactor: 10,
+})
+
+app.register(jwt, {
+  secret: process.env.JWT_SECRET_KEY as string,
+})
+
+app.register(usersRoute)
 
 app
   .listen({
