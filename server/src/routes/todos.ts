@@ -11,12 +11,24 @@ const bodySchema = z
     priority: z.string(),
     status: z.string(),
   })
-  .refine((data) => data.priority === 'high' || 'medium' || 'low', {
-    message: 'Priority deve ser high, medium, ou low.',
-  })
-  .refine((data) => data.status === 'todo' || 'progress' || 'done', {
-    message: 'Status deve ser todo, progress ou done.',
-  })
+  .refine(
+    (data) =>
+      data.priority === 'high' ||
+      data.priority === 'medium' ||
+      data.priority === 'low',
+    {
+      message: 'Priority deve ser high, medium, ou low.',
+    },
+  )
+  .refine(
+    (data) =>
+      data.status === 'todo' ||
+      data.status === 'progress' ||
+      data.status === 'done',
+    {
+      message: 'Status deve ser todo, progress ou done.',
+    },
+  )
 
 export async function todosRoute(app: FastifyInstance) {
   app.addHook('preHandler', async (request) => {
