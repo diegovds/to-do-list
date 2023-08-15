@@ -1,12 +1,12 @@
 import cors from '@fastify/cors'
 import jwt from '@fastify/jwt'
 import 'dotenv/config'
-import fastfy from 'fastify'
+import fastify from 'fastify'
 import bcrypt from 'fastify-bcrypt'
 import { authRoutes } from './routes/auth'
 import { todosRoute } from './routes/todos'
 
-const app = fastfy()
+const app = fastify()
 
 app.register(cors, {
   origin: true,
