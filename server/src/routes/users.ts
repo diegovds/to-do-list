@@ -6,7 +6,9 @@ export async function usersRoute(app: FastifyInstance) {
     const bodySchema = z.object({
       name: z.string(),
       email: z.string().email({ message: 'email não válido' }),
-      password: z.string(),
+      password: z
+        .string()
+        .min(6, { message: 'a senha deve ter pelo menos 6 caracteres' }),
     })
 
     const { name, email, password } = bodySchema.parse(request.body)
