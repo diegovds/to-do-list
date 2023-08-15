@@ -28,6 +28,10 @@ app.register(jwt, {
   secret: process.env.JWT_SECRET_KEY as string,
 })
 
+app.get('/', async () => {
+  return { API: 'Todo List' }
+})
+
 app.register(authRoutes)
 app.register(todosRoute)
 
