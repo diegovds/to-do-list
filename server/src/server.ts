@@ -8,8 +8,6 @@ import { todosRoute } from './routes/todos'
 
 const app = fastfy()
 
-const port = process.env.PORT ? parseInt(process.env.PORT) : 3333
-
 app.register(cors, {
   origin: true,
   /** origin: ['http://localhost:3000'], */
@@ -28,12 +26,8 @@ app.register(todosRoute)
 
 app
   .listen({
-    port,
+    port: 3333,
   })
   .then(() => {
-    console.log(
-      process.env.PORT
-        ? `${port}`
-        : '🚀 HTTP server running on http://localhost:3333',
-    )
+    console.log('🚀 HTTP server running on http://localhost:3333')
   })
