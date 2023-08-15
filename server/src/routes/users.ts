@@ -25,6 +25,12 @@ export async function usersRoute(app: FastifyInstance) {
 
     if (user) {
       passwordVerify = await app.bcrypt.compare(password, user.password)
+
+      if (!passwordVerify) {
+        return reply.status(401).send({
+          message: 'Senha incorreta.',
+        })
+      }
     }
 
     if (!user && name) {
@@ -53,8 +59,6 @@ export async function usersRoute(app: FastifyInstance) {
       return { token }
     }
 
-    return reply
-      .status(400)
-      .send({ message: 'Ocorreu um erro ao fazer login ou ao criar usuário.' })
+    return reply.status(400).send({ message: 'Ocorreu um erro no servidor.' })
   })
 }
