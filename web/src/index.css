@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Urbanist', sans-serif;
+  }
+
+  body {
+    @apply bg-darker text-gray-100;
+  }
+}
+
+.container {
+  @apply mx-auto w-full max-w-[1200px] px-6;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #202225;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(204, 204, 204);
+  border-radius: 14px;
+}
