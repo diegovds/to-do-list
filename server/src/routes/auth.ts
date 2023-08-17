@@ -5,7 +5,10 @@ import { prisma } from '../lib/prisma'
 export async function authRoutes(app: FastifyInstance) {
   app.post('/auth', async (request, reply) => {
     const bodySchema = z.object({
-      name: z.string().optional(),
+      name: z
+        .string()
+        .min(2, { message: 'o nome deve ter pelo menos 2 caracteres' })
+        .optional(),
       email: z.string().email({ message: 'email não válido' }),
       password: z
         .string()
