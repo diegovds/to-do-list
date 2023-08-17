@@ -6,6 +6,7 @@ import Form from "../../components/Form";
 import FormHeader from "../../components/Form/FormHeader";
 import Input from "../../components/Input";
 import Link from "../../components/Link";
+import api from "../../libs/axios";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -26,8 +27,16 @@ const Signin = () => {
   const { ref: emailRef } = register("email");
   const { ref: passwordRef } = register("password");
 
-  const onSubmit = async (data: FormData) => {
-    console.log(data);
+  const onSubmit = async ({ email, password }: FormData) => {
+    await api
+      .post("/auth", {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        console.log(res.data.token);
+      })
+      .catch(() => {});
   };
 
   return (
@@ -38,12 +47,14 @@ const Signin = () => {
           type="text"
           placeholder="E-mail"
           autoFocus
+          disabled={isSubmitting}
           {...register("email", { required: true })}
           ref={emailRef}
         />
         <Input
           type="password"
           placeholder="Senha"
+          disabled={isSubmitting}
           {...register("password", { required: true })}
           ref={passwordRef}
         />
