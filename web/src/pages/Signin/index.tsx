@@ -1,12 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import Cookies from "js-cookie";
+import decode from "jwt-decode";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
 import FormHeader from "../../components/Form/FormHeader";
 import Input from "../../components/Input";
 import Link from "../../components/Link";
+import { Context } from "../../contexts/Context";
 import api from "../../libs/axios";
+import { auth } from "../../types/auth";
+import { UserActions } from "../../types/reducerActionType";
+import { User } from "../../types/user";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -16,6 +24,9 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const Signin = () => {
+  const navigate = useNavigate();
+  const { dispatch } = useContext(Context);
+
   const {
     handleSubmit,
     register,
@@ -29,12 +40,36 @@ const Signin = () => {
 
   const onSubmit = async ({ email, password }: FormData) => {
     await api
-      .post("/auth", {
+      .post<auth>("/auth", {
         email: email,
         password: password,
       })
       .then((res) => {
-        console.log(res.data.token);
+        const token = res.data.token;
+        const cookieExpiresInSeconds = 60 * 60 * 24 * 30;
+
+        Cookies.set("token", token, {
+          expires: cookieExpiresInSeconds,
+          path: "/",
+        });
+
+        const user: User = decode(token);
+
+        dispatch({
+          type: UserActions.setName,
+          payload: {
+            name: user.name,
+          },
+        });
+
+        dispatch({
+          type: UserActions.setToken,
+          payload: {
+            token,
+          },
+        });
+
+        return navigate("/todos");
       })
       .catch(() => {});
   };
