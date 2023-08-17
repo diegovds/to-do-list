@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 
 export async function authRoutes(app: FastifyInstance) {
-  app.post('/users', async (request, reply) => {
+  app.post('/auth', async (request, reply) => {
     const bodySchema = z.object({
       name: z.string().optional(),
       email: z.string().email({ message: 'email não válido' }),
