@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
-import FormHeader from "../../components/Form/FormHeader";
 import Input from "../../components/Input";
 import Link from "../../components/Link";
+import SectionHeader from "../../components/SectionHeader";
 import { Context } from "../../contexts/Context";
 import api from "../../libs/axios";
 import { auth } from "../../types/auth";
@@ -77,7 +77,10 @@ const Signin = () => {
   return (
     <section className="container flex min-h-screen justify-center items-center py-10">
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormHeader title="Entrar" description="Insira as suas credenciais" />
+        <SectionHeader
+          title="Entrar"
+          description="Insira as suas credenciais"
+        />
         <Input
           type="text"
           placeholder="E-mail"

@@ -1,5 +1,5 @@
 import { FormHTMLAttributes } from "react";
-import { cn } from "../../libs/utils";
+import { cn } from "../libs/utils";
 
 type FormProps = FormHTMLAttributes<HTMLFormElement>;
 
