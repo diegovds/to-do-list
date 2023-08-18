@@ -41,8 +41,8 @@ const Signin = () => {
   const onSubmit = async ({ email, password }: FormData) => {
     await api
       .post<auth>("/auth", {
-        email: email,
-        password: password,
+        email,
+        password,
       })
       .then((res) => {
         const token = res.data.token;
@@ -75,7 +75,7 @@ const Signin = () => {
   };
 
   return (
-    <section className="flex min-h-screen justify-center items-center">
+    <section className="container flex min-h-screen justify-center items-center py-10">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormHeader title="Entrar" description="Insira as suas credenciais" />
         <Input
