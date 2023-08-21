@@ -1,14 +1,31 @@
+import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useContext } from "react";
 import Button from "../../components/Button";
 import SectionHeader from "../../components/SectionHeader";
 import { Context } from "../../contexts/Context";
 import api from "../../libs/axios";
+import { Todos as TodosType } from "../../types/Todos";
 import { UserActions } from "../../types/reducerActionType";
 import NewTodoForm, { NewTodoFormData } from "./components/NewTodoForm";
 
 const Todos = () => {
   const { state, dispatch } = useContext(Context);
+
+  const fetchTodos = async () => {
+    return await api
+      .get<TodosType>("/todos", {
+        headers: {
+          Authorization: `Bearer ${state.user.token}`,
+        },
+      })
+      .then((response) => response.data.todos);
+  };
+
+  const { data: todos, isLoading } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodos,
+  });
 
   const handleLogout = () => {
     Cookies.remove("token");
@@ -67,6 +84,10 @@ const Todos = () => {
       </div>
       <div className="border-b mt-5 border-b-gray-100" />
       <NewTodoForm newTodo={handleNewTodo} />
+      {isLoading && <p>Carregando...</p>}
+      {todos?.map((todo) => (
+        <p key={todo.id}>{todo.content}</p>
+      ))}
     </section>
   );
 };
