@@ -56,18 +56,18 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
 
   return (
     <Form
-      className="mt-7 mx-auto md:w-full lg:w-full min-h-fit flex-row"
+      className="mt-7 mx-auto md:w-full lg:w-full min-h-fit lg:flex-row"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex-1">
+      <div className="w-full lg:flex-1">
         <Input
           type="text"
           placeholder="Digite a tarefa"
           {...register("content", { required: true })}
         />
       </div>
-      <div className="flex flex-1 gap-4">
-        <div className="flex items-center gap-2 w-[50%]">
+      <div className="flex flex-1 gap-4 flex-wrap lg:flex-nowrap">
+        <div className="flex items-center gap-2 w-full lg:w-[50%]">
           <label htmlFor="priority">Prioridade:</label>
           <select
             className="flex-1 focus: h-14 w-full rounded-lg bg-darker p-4 text-gray-50 outline-none ring-darker placeholder:text-gray-400 focus:ring-2"
@@ -79,7 +79,7 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
             <option value="high">Alta</option>
           </select>
         </div>
-        <div className="flex items-center gap-2 w-[50%]">
+        <div className="flex items-center gap-2 w-full lg:w-[50%]">
           <label htmlFor="status">Status:</label>
           <select
             className="flex-1 focus: h-14 w-full rounded-lg bg-darker p-4 text-gray-50 outline-none ring-darker placeholder:text-gray-400 focus:ring-2"
@@ -92,7 +92,7 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
           </select>
         </div>
       </div>
-      <Button className="py-4" disabled={isSubmitting}>
+      <Button className="py-4 w-full lg:w-fit" disabled={isSubmitting}>
         Adicionar tarefa
       </Button>
     </Form>
