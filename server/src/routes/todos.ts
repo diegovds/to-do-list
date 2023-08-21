@@ -55,6 +55,9 @@ export async function todosRoute(app: FastifyInstance) {
       where: {
         userId: request.user.sub,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     return { todos }
