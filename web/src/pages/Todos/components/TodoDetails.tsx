@@ -16,12 +16,12 @@ const TodoDetails = ({
   return (
     <div
       className={cn(
-        `flex justify-between items-center gap-4 p-5 rounded-xl`,
+        `flex justify-between items-center gap-4 p-5 rounded-xl bg-darker border-2`,
         priority === "high"
-          ? `bg-red-500`
+          ? `border-red-500`
           : priority === "medium"
-          ? `bg-yellow-400`
-          : `bg-green-500`
+          ? `border-yellow-400`
+          : `border-green-500`
       )}
     >
       <h1 className="line-clamp-6">{content}</h1>

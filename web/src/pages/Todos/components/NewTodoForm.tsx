@@ -88,7 +88,7 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
           >
             <option value="todo">Não iniciada</option>
             <option value="progress">Em progresso</option>
-            <option value="done">Concluído</option>
+            <option value="done">Finalizada</option>
           </select>
         </div>
       </div>

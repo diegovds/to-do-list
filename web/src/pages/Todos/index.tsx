@@ -108,60 +108,63 @@ const Todos = () => {
       <div className="border-b mt-5 border-b-gray-100" />
       <NewTodoForm newTodo={handleNewTodo} />
       {isLoading ? (
-        <p>Carregando...</p>
+        <h2 className="text-3xl my-8">Carregando...</h2>
       ) : todos && todos.length > 0 ? (
-        <div className="grid grid-cols-3 gap-10 my-5">
-          <div className="bg-card shadow-card rounded-lg p-5">
-            <h3 className="mb-5 text-center">Não iniciada</h3>
-            <div className="flex flex-col gap-3">
-              {todos?.map(
-                (todo) =>
-                  todo.status === "todo" && (
-                    <TodoDetails
-                      key={todo.id}
-                      todo={todo}
-                      deleteTodo={handleDeleteTodo}
-                      editTodo={handleEditTodo}
-                    />
-                  )
-              )}
+        <div>
+          <h2 className="text-3xl my-8">Tarefas adicinadas:</h2>
+          <div className="grid grid-cols-3 gap-10 mb-5">
+            <div className="bg-card shadow-card rounded-lg p-5">
+              <h3 className="mb-5 text-center">Não iniciada</h3>
+              <div className="flex flex-col gap-3">
+                {todos?.map(
+                  (todo) =>
+                    todo.status === "todo" && (
+                      <TodoDetails
+                        key={todo.id}
+                        todo={todo}
+                        deleteTodo={handleDeleteTodo}
+                        editTodo={handleEditTodo}
+                      />
+                    )
+                )}
+              </div>
             </div>
-          </div>
-          <div className="bg-card shadow-card rounded-lg p-5">
-            <h3 className="mb-5 text-center">Em progresso</h3>
-            <div className="flex flex-col gap-3">
-              {todos?.map(
-                (todo) =>
-                  todo.status === "progress" && (
-                    <TodoDetails
-                      key={todo.id}
-                      todo={todo}
-                      deleteTodo={handleDeleteTodo}
-                      editTodo={handleEditTodo}
-                    />
-                  )
-              )}
+            <div className="bg-card shadow-card rounded-lg p-5">
+              <h3 className="mb-5 text-center">Em progresso</h3>
+              <div className="flex flex-col gap-3">
+                {todos?.map(
+                  (todo) =>
+                    todo.status === "progress" && (
+                      <TodoDetails
+                        key={todo.id}
+                        todo={todo}
+                        deleteTodo={handleDeleteTodo}
+                        editTodo={handleEditTodo}
+                      />
+                    )
+                )}
+              </div>
             </div>
-          </div>
-          <div className="bg-card shadow-card rounded-lg p-5">
-            <h3 className="mb-5 text-center">Finalizada</h3>
-            <div className="flex flex-col gap-3">
-              {todos?.map(
-                (todo) =>
-                  todo.status === "done" && (
-                    <TodoDetails
-                      key={todo.id}
-                      todo={todo}
-                      deleteTodo={handleDeleteTodo}
-                      editTodo={handleEditTodo}
-                    />
-                  )
-              )}
+            <div className="bg-card shadow-card rounded-lg p-5">
+              <h3 className="mb-5 text-center">Finalizada</h3>
+              <div className="flex flex-col gap-3">
+                {todos?.map(
+                  (todo) =>
+                    todo.status === "done" && (
+                      <TodoDetails
+                        key={todo.id}
+                        todo={todo}
+                        deleteTodo={handleDeleteTodo}
+                        editTodo={handleEditTodo}
+                      />
+                    )
+                )}
+              </div>
             </div>
           </div>
         </div>
       ) : (
-        <p>Nenhuma tarefa cadastrada</p>
+        <h2 className="text-3xl my-8">Nenhuma tarefa cadastrada</h2>
       )}
     </section>
   );
