@@ -1,3 +1,5 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createContext, useReducer } from "react";
 import {
   UserType,
@@ -30,8 +32,14 @@ const mainReducer = (state: initialStateType, action: reducerActionType) => ({
 
 export const ContextProvider = ({ children }: React.PropsWithChildren) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
+  const queryClient = new QueryClient();
 
   return (
-    <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
+    <Context.Provider value={{ state, dispatch }}>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      </QueryClientProvider>
+    </Context.Provider>
   );
 };
