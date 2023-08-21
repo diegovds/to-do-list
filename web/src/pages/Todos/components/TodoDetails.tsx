@@ -13,7 +13,7 @@ const TodoDetails = ({
   return (
     <div
       className={cn(
-        `flex justify-between p-5`,
+        `flex justify-between p-5 rounded-xl`,
         priority === "high"
           ? `bg-red-500`
           : priority === "medium"
