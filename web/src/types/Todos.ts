@@ -1,4 +1,4 @@
-type Todo = {
+export type Todo = {
     id: string,
     content: string,
     priority: string,

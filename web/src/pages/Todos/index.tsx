@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useContext } from "react";
 import Button from "../../components/Button";
@@ -8,11 +8,13 @@ import api from "../../libs/axios";
 import { Todos as TodosType } from "../../types/Todos";
 import { UserActions } from "../../types/reducerActionType";
 import NewTodoForm, { NewTodoFormData } from "./components/NewTodoForm";
+import TodoDetails from "./components/TodoDetails";
 
 const Todos = () => {
   const { state, dispatch } = useContext(Context);
+  const queryClient = useQueryClient();
 
-  const fetchTodos = async () => {
+  const getTodos = async () => {
     return await api
       .get<TodosType>("/todos", {
         headers: {
@@ -24,7 +26,7 @@ const Todos = () => {
 
   const { data: todos, isLoading } = useQuery({
     queryKey: ["todos"],
-    queryFn: fetchTodos,
+    queryFn: getTodos,
   });
 
   const handleLogout = () => {
@@ -65,10 +67,25 @@ const Todos = () => {
         }
       )
       .then(() => {
-        alert("Tarefa adicionada");
+        queryClient.invalidateQueries({ queryKey: ["todos"] });
       })
       .catch(() => {
         alert("Ocorreu um erro ao adicionar a tarefa");
+      });
+  };
+
+  const handleDeleteTodo = async (id: string) => {
+    await api
+      .delete(`/todos/${id}`, {
+        headers: {
+          Authorization: `Bearer ${state.user.token}`,
+        },
+      })
+      .then(() => {
+        queryClient.invalidateQueries({ queryKey: ["todos"] });
+      })
+      .catch(() => {
+        alert("Ocorreu um erro ao deletar a tarefa");
       });
   };
 
@@ -85,9 +102,53 @@ const Todos = () => {
       <div className="border-b mt-5 border-b-gray-100" />
       <NewTodoForm newTodo={handleNewTodo} />
       {isLoading && <p>Carregando...</p>}
-      {todos?.map((todo) => (
-        <p key={todo.id}>{todo.content}</p>
-      ))}
+      <div className="grid grid-cols-3 gap-10 my-5">
+        <div className="bg-card shadow-card rounded-lg p-5">
+          <h3 className="mb-5 text-center">Não iniciada</h3>
+          <div className="flex flex-col gap-3">
+            {todos?.map(
+              (todo) =>
+                todo.status === "todo" && (
+                  <TodoDetails
+                    key={todo.id}
+                    todo={todo}
+                    deleteTodo={handleDeleteTodo}
+                  />
+                )
+            )}
+          </div>
+        </div>
+        <div className="bg-card shadow-card rounded-lg p-5">
+          <h3 className="mb-5 text-center">Em progresso</h3>
+          <div className="flex flex-col gap-3">
+            {todos?.map(
+              (todo) =>
+                todo.status === "progress" && (
+                  <TodoDetails
+                    key={todo.id}
+                    todo={todo}
+                    deleteTodo={handleDeleteTodo}
+                  />
+                )
+            )}
+          </div>
+        </div>
+        <div className="bg-card shadow-card rounded-lg p-5">
+          <h3 className="mb-5 text-center">Finalizada</h3>
+          <div className="flex flex-col gap-3">
+            {todos?.map(
+              (todo) =>
+                todo.status === "done" && (
+                  <TodoDetails
+                    key={todo.id}
+                    todo={todo}
+                    deleteTodo={handleDeleteTodo}
+                  />
+                )
+            )}
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
