@@ -89,6 +89,12 @@ const Todos = () => {
       });
   };
 
+  const handleEditTodo = async (id: string) => {
+    const index = todos?.map((todo) => todo.id).indexOf(id);
+
+    console.log(index);
+  };
+
   return (
     <section className="container">
       <div className="flex justify-between items-center pt-5">
@@ -115,6 +121,7 @@ const Todos = () => {
                       key={todo.id}
                       todo={todo}
                       deleteTodo={handleDeleteTodo}
+                      editTodo={handleEditTodo}
                     />
                   )
               )}
@@ -130,6 +137,7 @@ const Todos = () => {
                       key={todo.id}
                       todo={todo}
                       deleteTodo={handleDeleteTodo}
+                      editTodo={handleEditTodo}
                     />
                   )
               )}
@@ -145,6 +153,7 @@ const Todos = () => {
                       key={todo.id}
                       todo={todo}
                       deleteTodo={handleDeleteTodo}
+                      editTodo={handleEditTodo}
                     />
                   )
               )}
