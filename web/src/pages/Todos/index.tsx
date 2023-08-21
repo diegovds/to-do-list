@@ -101,54 +101,59 @@ const Todos = () => {
       </div>
       <div className="border-b mt-5 border-b-gray-100" />
       <NewTodoForm newTodo={handleNewTodo} />
-      {isLoading && <p>Carregando...</p>}
-      <div className="grid grid-cols-3 gap-10 my-5">
-        <div className="bg-card shadow-card rounded-lg p-5">
-          <h3 className="mb-5 text-center">Não iniciada</h3>
-          <div className="flex flex-col gap-3">
-            {todos?.map(
-              (todo) =>
-                todo.status === "todo" && (
-                  <TodoDetails
-                    key={todo.id}
-                    todo={todo}
-                    deleteTodo={handleDeleteTodo}
-                  />
-                )
-            )}
+      {isLoading ? (
+        <p>Carregando...</p>
+      ) : todos && todos.length > 0 ? (
+        <div className="grid grid-cols-3 gap-10 my-5">
+          <div className="bg-card shadow-card rounded-lg p-5">
+            <h3 className="mb-5 text-center">Não iniciada</h3>
+            <div className="flex flex-col gap-3">
+              {todos?.map(
+                (todo) =>
+                  todo.status === "todo" && (
+                    <TodoDetails
+                      key={todo.id}
+                      todo={todo}
+                      deleteTodo={handleDeleteTodo}
+                    />
+                  )
+              )}
+            </div>
+          </div>
+          <div className="bg-card shadow-card rounded-lg p-5">
+            <h3 className="mb-5 text-center">Em progresso</h3>
+            <div className="flex flex-col gap-3">
+              {todos?.map(
+                (todo) =>
+                  todo.status === "progress" && (
+                    <TodoDetails
+                      key={todo.id}
+                      todo={todo}
+                      deleteTodo={handleDeleteTodo}
+                    />
+                  )
+              )}
+            </div>
+          </div>
+          <div className="bg-card shadow-card rounded-lg p-5">
+            <h3 className="mb-5 text-center">Finalizada</h3>
+            <div className="flex flex-col gap-3">
+              {todos?.map(
+                (todo) =>
+                  todo.status === "done" && (
+                    <TodoDetails
+                      key={todo.id}
+                      todo={todo}
+                      deleteTodo={handleDeleteTodo}
+                    />
+                  )
+              )}
+            </div>
           </div>
         </div>
-        <div className="bg-card shadow-card rounded-lg p-5">
-          <h3 className="mb-5 text-center">Em progresso</h3>
-          <div className="flex flex-col gap-3">
-            {todos?.map(
-              (todo) =>
-                todo.status === "progress" && (
-                  <TodoDetails
-                    key={todo.id}
-                    todo={todo}
-                    deleteTodo={handleDeleteTodo}
-                  />
-                )
-            )}
-          </div>
-        </div>
-        <div className="bg-card shadow-card rounded-lg p-5">
-          <h3 className="mb-5 text-center">Finalizada</h3>
-          <div className="flex flex-col gap-3">
-            {todos?.map(
-              (todo) =>
-                todo.status === "done" && (
-                  <TodoDetails
-                    key={todo.id}
-                    todo={todo}
-                    deleteTodo={handleDeleteTodo}
-                  />
-                )
-            )}
-          </div>
-        </div>
-      </div>
+      ) : (
+        <p>Nenhuma tarefa cadastrada</p>
+      )}
     </section>
   );
 };
