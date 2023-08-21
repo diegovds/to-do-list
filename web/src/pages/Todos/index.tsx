@@ -112,7 +112,7 @@ const Todos = () => {
       ) : todos && todos.length > 0 ? (
         <div>
           <h2 className="text-3xl my-8">Tarefas adicionadas:</h2>
-          <div className="grid grid-cols-3 gap-10 mb-5">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-5">
             <div className="bg-card shadow-card rounded-lg p-5">
               <h3 className="mb-5 text-center">Não iniciada</h3>
               <div className="flex flex-col gap-3">
