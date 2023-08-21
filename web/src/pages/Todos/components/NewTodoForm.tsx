@@ -59,15 +59,17 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
       className="mt-7 mx-auto md:w-full lg:w-full min-h-fit lg:flex-row"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="w-full lg:flex-1">
+      <div className="flex flex-col gap-2 w-full lg:flex-1 lg:items-center lg:flex-row">
+        <label htmlFor="todo">Tarefa:</label>
         <Input
           type="text"
           placeholder="Digite a tarefa"
+          id="todo"
           {...register("content", { required: true })}
         />
       </div>
-      <div className="flex flex-1 gap-4 flex-wrap lg:flex-nowrap">
-        <div className="flex items-center gap-2 w-full lg:w-[50%]">
+      <div className="flex w-full gap-4 flex-wrap lg:flex-nowrap lg:flex-1">
+        <div className="flex flex-col gap-2 w-full lg:w-[50%] lg:items-center lg:flex-row">
           <label htmlFor="priority">Prioridade:</label>
           <select
             className="flex-1 focus: h-14 w-full rounded-lg bg-darker p-4 text-gray-50 outline-none ring-darker placeholder:text-gray-400 focus:ring-2"
@@ -79,7 +81,7 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
             <option value="high">Alta</option>
           </select>
         </div>
-        <div className="flex items-center gap-2 w-full lg:w-[50%]">
+        <div className="flex flex-col gap-2 w-full lg:w-[50%] lg:items-center lg:flex-row">
           <label htmlFor="status">Status:</label>
           <select
             className="flex-1 focus: h-14 w-full rounded-lg bg-darker p-4 text-gray-50 outline-none ring-darker placeholder:text-gray-400 focus:ring-2"
