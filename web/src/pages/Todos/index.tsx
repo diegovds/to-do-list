@@ -7,9 +7,8 @@ import { Context } from "../../contexts/Context";
 import api from "../../libs/axios";
 import { Todo, Todos as TodosType } from "../../types/Todos";
 import { UserActions } from "../../types/reducerActionType";
+import MyTodosContainer from "./components/MyTodosContainer";
 import NewTodoForm, { NewTodoFormData } from "./components/NewTodoForm";
-import TodoDetails from "./components/TodoDetails";
-import TodosContainer from "./components/TodosContainer";
 
 const Todos = () => {
   const { state, dispatch } = useContext(Context);
@@ -124,47 +123,13 @@ const Todos = () => {
       {isLoading ? (
         <h2 className="text-3xl my-8">Carregando...</h2>
       ) : todos && todos.length > 0 ? (
-        <>
-          <h2 className="text-3xl my-8">Tarefas adicionadas:</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-5 items-start">
-            <TodosContainer title="Não iniciada" todoLength={todo?.length}>
-              {todo &&
-                todo.map((todo) => (
-                  <TodoDetails
-                    key={todo.id}
-                    todo={todo}
-                    deleteTodo={handleDeleteTodo}
-                    editTodo={handleEditTodo}
-                  />
-                ))}
-            </TodosContainer>
-            <TodosContainer
-              title="Em progresso"
-              todoLength={progressTodo?.length}
-            >
-              {progressTodo &&
-                progressTodo.map((todo) => (
-                  <TodoDetails
-                    key={todo.id}
-                    todo={todo}
-                    deleteTodo={handleDeleteTodo}
-                    editTodo={handleEditTodo}
-                  />
-                ))}
-            </TodosContainer>
-            <TodosContainer title="Finalizada" todoLength={doneTodo?.length}>
-              {doneTodo &&
-                doneTodo.map((todo) => (
-                  <TodoDetails
-                    key={todo.id}
-                    todo={todo}
-                    deleteTodo={handleDeleteTodo}
-                    editTodo={handleEditTodo}
-                  />
-                ))}
-            </TodosContainer>
-          </div>
-        </>
+        <MyTodosContainer
+          todo={todo}
+          progressTodo={progressTodo}
+          doneTodo={doneTodo}
+          editTodo={handleEditTodo}
+          deleteTodo={handleDeleteTodo}
+        />
       ) : (
         <h2 className="text-3xl my-8">Nenhuma tarefa cadastrada</h2>
       )}
