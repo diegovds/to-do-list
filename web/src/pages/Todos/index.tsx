@@ -1,11 +1,11 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../../components/Button";
 import SectionHeader from "../../components/SectionHeader";
 import { Context } from "../../contexts/Context";
 import api from "../../libs/axios";
-import { Todos as TodosType } from "../../types/Todos";
+import { Todo, Todos as TodosType } from "../../types/Todos";
 import { UserActions } from "../../types/reducerActionType";
 import NewTodoForm, { NewTodoFormData } from "./components/NewTodoForm";
 import TodoDetails from "./components/TodoDetails";
@@ -14,6 +14,9 @@ import TodosContainer from "./components/TodosContainer";
 const Todos = () => {
   const { state, dispatch } = useContext(Context);
   const queryClient = useQueryClient();
+  const [todo, setTodo] = useState<Todo[]>();
+  const [progressTodo, setProgressTodo] = useState<Todo[]>();
+  const [doneTodo, setDoneTodo] = useState<Todo[]>();
 
   const getTodos = async () => {
     return await api
@@ -29,6 +32,16 @@ const Todos = () => {
     queryKey: ["todos"],
     queryFn: getTodos,
   });
+
+  useEffect(() => {
+    const todo = todos?.filter((todo) => todo.status === "todo");
+    const progress = todos?.filter((todo) => todo.status === "progress");
+    const done = todos?.filter((todo) => todo.status === "done");
+
+    setTodo(todo);
+    setProgressTodo(progress);
+    setDoneTodo(done);
+  }, [todos]);
 
   const handleLogout = () => {
     Cookies.remove("token");
@@ -113,45 +126,42 @@ const Todos = () => {
       ) : todos && todos.length > 0 ? (
         <>
           <h2 className="text-3xl my-8">Tarefas adicionadas:</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-5">
-            <TodosContainer title="Não iniciada">
-              {todos.map(
-                (todo) =>
-                  todo.status === "todo" && (
-                    <TodoDetails
-                      key={todo.id}
-                      todo={todo}
-                      deleteTodo={handleDeleteTodo}
-                      editTodo={handleEditTodo}
-                    />
-                  )
-              )}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-5 items-start">
+            <TodosContainer title="Não iniciada" todoLength={todo?.length}>
+              {todo &&
+                todo.map((todo) => (
+                  <TodoDetails
+                    key={todo.id}
+                    todo={todo}
+                    deleteTodo={handleDeleteTodo}
+                    editTodo={handleEditTodo}
+                  />
+                ))}
             </TodosContainer>
-            <TodosContainer title="Em progresso">
-              {todos.map(
-                (todo) =>
-                  todo.status === "progress" && (
-                    <TodoDetails
-                      key={todo.id}
-                      todo={todo}
-                      deleteTodo={handleDeleteTodo}
-                      editTodo={handleEditTodo}
-                    />
-                  )
-              )}
+            <TodosContainer
+              title="Em progresso"
+              todoLength={progressTodo?.length}
+            >
+              {progressTodo &&
+                progressTodo.map((todo) => (
+                  <TodoDetails
+                    key={todo.id}
+                    todo={todo}
+                    deleteTodo={handleDeleteTodo}
+                    editTodo={handleEditTodo}
+                  />
+                ))}
             </TodosContainer>
-            <TodosContainer title="Finalizada">
-              {todos.map(
-                (todo) =>
-                  todo.status === "done" && (
-                    <TodoDetails
-                      key={todo.id}
-                      todo={todo}
-                      deleteTodo={handleDeleteTodo}
-                      editTodo={handleEditTodo}
-                    />
-                  )
-              )}
+            <TodosContainer title="Finalizada" todoLength={doneTodo?.length}>
+              {doneTodo &&
+                doneTodo.map((todo) => (
+                  <TodoDetails
+                    key={todo.id}
+                    todo={todo}
+                    deleteTodo={handleDeleteTodo}
+                    editTodo={handleEditTodo}
+                  />
+                ))}
             </TodosContainer>
           </div>
         </>

@@ -57,7 +57,6 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
   const { ref: statusRef } = register("status");
 
   const onSubmit = async (data: NewTodoFormData) => {
-    console.log(data);
     newTodo(data);
     reset();
   };
