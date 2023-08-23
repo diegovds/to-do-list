@@ -4,6 +4,9 @@ import { z } from "zod";
 import Button from "../../../components/Button";
 import Form from "../../../components/Form";
 import Input from "../../../components/Input";
+import InputDiv from "./InputDiv";
+import Label from "./Label";
+import Select from "./Select";
 
 const formSchema = z
   .object({
@@ -49,52 +52,66 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
     resolver: zodResolver(formSchema),
   });
 
+  const { ref: contentRef } = register("content");
+  const { ref: priorityRef } = register("priority");
+  const { ref: statusRef } = register("status");
+
   const onSubmit = async (data: NewTodoFormData) => {
+    console.log(data);
     newTodo(data);
     reset();
   };
 
   return (
     <Form
-      className="mt-7 mx-auto md:w-full lg:w-full min-h-fit lg:flex-row"
+      className="mt-10 w-full md:w-full lg:w-full lg:flex-row min-h-min"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex flex-col gap-2 w-full lg:flex-1 lg:items-center lg:flex-row">
-        <label htmlFor="todo">Tarefa:</label>
+      <InputDiv>
+        <Label htmlFor="todo">Tarefa:</Label>
         <Input
           type="text"
           placeholder="Digite a tarefa"
           id="todo"
           {...register("content", { required: true })}
+          ref={contentRef}
         />
-      </div>
-      <div className="flex w-full gap-4 flex-wrap lg:flex-nowrap lg:flex-1">
-        <div className="flex flex-col gap-2 w-full lg:w-[50%] lg:items-center lg:flex-row">
-          <label htmlFor="priority">Prioridade:</label>
-          <select
-            className="flex-1 focus: h-14 w-full rounded-lg bg-darker p-4 text-gray-50 outline-none ring-darker placeholder:text-gray-400 focus:ring-2"
+      </InputDiv>
+      <div className="flex flex-col w-full gap-4 lg:flex-row lg:flex-1">
+        <InputDiv>
+          <Label htmlFor="priority">Prioridade:</Label>
+          <Select
             id="priority"
+            defaultValue="defaul"
             {...register("priority", { required: true })}
+            ref={priorityRef}
           >
+            <option value="defaul" disabled hidden>
+              Selecionar
+            </option>
             <option value="low">Baixa</option>
             <option value="medium">Média</option>
             <option value="high">Alta</option>
-          </select>
-        </div>
-        <div className="flex flex-col gap-2 w-full lg:w-[50%] lg:items-center lg:flex-row">
-          <label htmlFor="status">Status:</label>
-          <select
-            className="flex-1 focus: h-14 w-full rounded-lg bg-darker p-4 text-gray-50 outline-none ring-darker placeholder:text-gray-400 focus:ring-2"
+          </Select>
+        </InputDiv>
+        <InputDiv>
+          <Label htmlFor="status">Status:</Label>
+          <Select
             id="status"
+            defaultValue="defaul"
             {...register("status", { required: true })}
+            ref={statusRef}
           >
+            <option value="defaul" disabled hidden>
+              Selecionar
+            </option>
             <option value="todo">Não iniciada</option>
             <option value="progress">Em progresso</option>
             <option value="done">Finalizada</option>
-          </select>
-        </div>
+          </Select>
+        </InputDiv>
       </div>
-      <Button className="py-4 w-full lg:w-fit" disabled={isSubmitting}>
+      <Button className="w-full lg:w-fit" disabled={isSubmitting}>
         Adicionar tarefa
       </Button>
     </Form>
