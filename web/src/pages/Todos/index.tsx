@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import Button from "../../components/Button";
 import SectionHeader from "../../components/SectionHeader";
 import { Context } from "../../contexts/Context";
@@ -65,41 +66,51 @@ const Todos = () => {
     priority,
     status,
   }: NewTodoFormData) => {
-    await api
-      .post(
-        "/todos",
-        {
-          content,
-          priority,
-          status,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${state.user.token}`,
+    await toast
+      .promise(
+        api.post(
+          "/todos",
+          {
+            content,
+            priority,
+            status,
           },
+          {
+            headers: {
+              Authorization: `Bearer ${state.user.token}`,
+            },
+          }
+        ),
+        {
+          loading: "Processando solicitação",
+          success: "Tarefa adicionada com sucesso 👌",
+          error: "Ocorreu um erro ao adicionar a tarefa 🤯",
         }
       )
       .then(() => {
         queryClient.invalidateQueries({ queryKey: ["todos"] });
       })
-      .catch(() => {
-        alert("Ocorreu um erro ao adicionar a tarefa");
-      });
+      .catch(() => {});
   };
 
   const handleDeleteTodo = async (id: string) => {
-    await api
-      .delete(`/todos/${id}`, {
-        headers: {
-          Authorization: `Bearer ${state.user.token}`,
-        },
-      })
+    await toast
+      .promise(
+        api.delete(`/todos/${id}`, {
+          headers: {
+            Authorization: `Bearer ${state.user.token}`,
+          },
+        }),
+        {
+          loading: "Processando solicitação",
+          success: "Tarefa excluída com sucesso 👌",
+          error: "Ocorreu um erro ao deletar a tarefa 🤯",
+        }
+      )
       .then(() => {
         queryClient.invalidateQueries({ queryKey: ["todos"] });
       })
-      .catch(() => {
-        alert("Ocorreu um erro ao deletar a tarefa");
-      });
+      .catch(() => {});
   };
 
   const handleEditTodo = async (id: string) => {
