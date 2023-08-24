@@ -113,11 +113,11 @@ const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
             id="priority"
             className={
               watchAllFields.priority === "high"
-                ? `focus:ring-0 border-2 border-red-500`
+                ? `ring-2 ring-red-500`
                 : watchAllFields.priority === "medium"
-                ? `focus:ring-0 border-2 border-yellow-400`
+                ? `ring-2 ring-yellow-400`
                 : watchAllFields.priority === "low"
-                ? `focus:ring-0 border-2 border-green-500`
+                ? `ring-2 ring-green-500`
                 : ``
             }
             defaultValue="default"
