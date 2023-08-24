@@ -12,6 +12,7 @@ import { UserActions } from "../../types/reducerActionType";
 import Modal from "./components/Modal";
 import MyTodosContainer from "./components/MyTodosContainer";
 import NewTodoForm, { NewTodoFormData } from "./components/NewTodoForm";
+import { AnimatePresence } from "framer-motion";
 
 const Todos = () => {
   const { state, dispatch } = useContext(Context);
@@ -200,6 +201,7 @@ const Todos = () => {
             editTodo={editTodo}
             deleteTodo={deleteTodo}
           />
+          <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
           {deletedTodo && (
             <Modal
               modalStatus={handleModal}
@@ -211,6 +213,7 @@ const Todos = () => {
               </h3>
             </Modal>
           )}
+          </AnimatePresence>
         </>
       ) : (
         <h2 className="text-3xl my-8">Nenhuma tarefa cadastrada</h2>

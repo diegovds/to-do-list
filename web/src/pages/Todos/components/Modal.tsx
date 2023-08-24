@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+import { motion } from "framer-motion";
 import { useOnClickOutside } from "usehooks-ts";
 import Button from "../../../components/Button";
 
@@ -20,7 +21,12 @@ const Modal = ({ children, modalStatus, handleDeleteTodo }: Props) => {
   useOnClickOutside(contentRef, !submission ? handleClickOutside : () => {});
 
   return (
-    <div className="bg-modal backdrop-blur-sm fixed top-0 bottom-0 right-0 left-0 z-10 flex items-center justify-center">
+    <motion.div
+      className="bg-modal backdrop-blur-sm fixed top-0 bottom-0 right-0 left-0 z-10 flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div
         className="bg-darker p-5 rounded-xl shadow-card text-center w-[90%] lg:w-[50%]"
         ref={contentRef}
@@ -46,7 +52,7 @@ const Modal = ({ children, modalStatus, handleDeleteTodo }: Props) => {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
