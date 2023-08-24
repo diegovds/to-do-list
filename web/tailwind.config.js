@@ -22,6 +22,9 @@ export default {
         },
         textColor: {
           darker: 'rgb(204, 204, 204)'
+        },
+        gridTemplateColumns: {
+          inputDiv: '80px 1fr'
         }
       },
     },

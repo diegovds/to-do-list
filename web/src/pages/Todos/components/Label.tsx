@@ -5,7 +5,7 @@ type LabelProps = LabelHTMLAttributes<HTMLLabelElement>;
 
 const Label = ({ children, className, ...props }: LabelProps) => {
   return (
-    <label className={cn("w-[100px] lg:w-fit", className)} {...props}>
+    <label className={cn("lg:w-fit", className)} {...props}>
       {children}
     </label>
   );
