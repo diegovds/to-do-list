@@ -205,7 +205,7 @@ const Todos = () => {
               modalStatus={handleModal}
               handleDeleteTodo={handleDeleteTodo}
             >
-              <h3 className="tracking-wider">
+              <h3 className="tracking-wider truncate">
                 Deseja excluir a tarefa{" "}
                 <span className="font-bold">"{deletedTodo.content}"</span>?
               </h3>

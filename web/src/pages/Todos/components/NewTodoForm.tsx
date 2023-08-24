@@ -111,6 +111,15 @@ const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
           <Label htmlFor="priority">Prioridade:</Label>
           <Select
             id="priority"
+            className={
+              watchAllFields.priority === "high"
+                ? `focus:ring-0 border-2 border-red-500`
+                : watchAllFields.priority === "medium"
+                ? `focus:ring-0 border-2 border-yellow-400`
+                : watchAllFields.priority === "low"
+                ? `focus:ring-0 border-2 border-green-500`
+                : ``
+            }
             defaultValue="default"
             {...register("priority", { required: true })}
             ref={priorityRef}
