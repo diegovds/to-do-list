@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInView } from "framer-motion";
 import Cookies from "js-cookie";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import Button from "../../components/Button";
 import SectionHeader from "../../components/SectionHeader";
@@ -20,6 +21,9 @@ const Todos = () => {
   const [doneTodo, setDoneTodo] = useState<Todo[]>();
   const [deletedTodo, setDeletedTodo] = useState<Todo | undefined>(undefined);
   const [editedTodo, setEditedTodo] = useState<Todo | undefined>(undefined);
+
+  const refNewTodoForm = useRef<HTMLDivElement>(null);
+  const isInView = useInView(refNewTodoForm, { once: false });
 
   const getTodos = async () => {
     return await api
@@ -161,6 +165,11 @@ const Todos = () => {
   };
 
   const editTodo = (todo: Todo) => {
+    const formSection = document.querySelector("#form");
+    if (formSection && !isInView) {
+      formSection.scrollIntoView({ behavior: "smooth" });
+    }
+
     setEditedTodo(todo);
   };
 
@@ -174,7 +183,7 @@ const Todos = () => {
         />
         <Button onClick={handleLogout}>Sair</Button>
       </div>
-      <div className="border-b mt-5 border-b-gray-100" />
+      <div className="border-b mt-5 border-b-gray-100" ref={refNewTodoForm} />
       <NewTodoForm
         newTodo={handleNewTodo}
         editTodo={editedTodo}
