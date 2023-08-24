@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 import { useOnClickOutside } from "usehooks-ts";
-import Button from "../../../../components/Button";
+import Button from "../../../components/Button";
 
 type Props = {
   children: React.ReactNode;
