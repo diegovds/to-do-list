@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Button from "../../../components/Button";
@@ -47,15 +47,20 @@ type NewTodoFormProps = {
 };
 
 const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
+  const [modifiedForm, setModifiedForm] = useState(0);
   const {
     handleSubmit,
     register,
     reset,
     setValue,
+    watch,
+
     formState: { isSubmitting },
   } = useForm<NewTodoFormData>({
     resolver: zodResolver(formSchema),
   });
+
+  const watchAllFields = watch();
 
   useEffect(() => {
     if (editTodo) {
@@ -64,6 +69,17 @@ const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
       setValue("status", editTodo.status);
     }
   }, [setValue, editTodo]);
+
+  useEffect(() => {
+    if (editTodo) {
+      let cont = 0;
+      watchAllFields.content === editTodo.content ? cont++ : 0;
+      watchAllFields.status === editTodo.status ? cont++ : 0;
+      watchAllFields.priority === editTodo.priority ? cont++ : 0;
+
+      setModifiedForm(cont);
+    }
+  }, [editTodo, watchAllFields]);
 
   const { ref: contentRef } = register("content");
   const { ref: priorityRef } = register("priority");
@@ -123,7 +139,10 @@ const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
           </Select>
         </InputDiv>
       </div>
-      <Button className="w-full lg:w-fit" disabled={isSubmitting}>
+      <Button
+        className="w-full lg:w-fit"
+        disabled={isSubmitting || modifiedForm === 3 ? true : false}
+      >
         {!editTodo ? "Adicionar tarefa" : "Atualizar tarefa"}
       </Button>
     </Form>
