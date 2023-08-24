@@ -4,14 +4,15 @@ import { Todo } from "../../../types/Todos";
 
 type TodoDetailsProps = {
   todo: Todo;
-  deleteTodo: (id: string) => void;
+  deleteTodo: (todo: Todo) => void;
   editTodo: (id: string) => void;
 };
 
 const TodoDetails = ({
+  todo,
   todo: { id, content, priority },
   deleteTodo,
-  editTodo
+  editTodo,
 }: TodoDetailsProps) => {
   return (
     <div
@@ -28,7 +29,7 @@ const TodoDetails = ({
       <div className="flex gap-4">
         <button
           className="flex items-center justify-center rounded-lg text-gray-50 transition-all hover:text-gray-300 disabled:opacity-50"
-          onClick={() => deleteTodo(id)}
+          onClick={() => deleteTodo(todo)}
         >
           <MdDelete size={23} />
         </button>

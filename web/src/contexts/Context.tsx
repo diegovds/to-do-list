@@ -44,7 +44,7 @@ export const ContextProvider = ({ children }: React.PropsWithChildren) => {
             style: {
               borderRadius: "10px",
               background: "#000",
-              color: "#fff",
+              color: "#f3f4f6",
             },
           }}
           position="bottom-center"

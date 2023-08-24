@@ -8,7 +8,8 @@ export default {
       extend: {
         backgroundColor: {
           darker: '#2f3136',
-          card: '#202225'
+          card: '#202225',
+          modal: 'rgba(0, 0, 0, 0.5)'
         },
         screens: {
           xsm: '375px'

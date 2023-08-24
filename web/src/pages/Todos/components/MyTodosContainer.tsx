@@ -6,7 +6,7 @@ type MyTodosContainerProps = {
   todo: Todo[] | undefined;
   progressTodo: Todo[] | undefined;
   doneTodo: Todo[] | undefined;
-  deleteTodo: (id: string) => void;
+  deleteTodo: (todo: Todo) => void;
   editTodo: (id: string) => void;
 };
 

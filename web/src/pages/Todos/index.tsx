@@ -8,6 +8,7 @@ import { Context } from "../../contexts/Context";
 import api from "../../libs/axios";
 import { Todo, Todos as TodosType } from "../../types/Todos";
 import { UserActions } from "../../types/reducerActionType";
+import Modal from "./components/Modal";
 import MyTodosContainer from "./components/MyTodosContainer";
 import NewTodoForm, { NewTodoFormData } from "./components/NewTodoForm";
 
@@ -17,6 +18,7 @@ const Todos = () => {
   const [todo, setTodo] = useState<Todo[]>();
   const [progressTodo, setProgressTodo] = useState<Todo[]>();
   const [doneTodo, setDoneTodo] = useState<Todo[]>();
+  const [selectedTodo, setSelectedTodo] = useState<Todo | undefined>(undefined);
 
   const getTodos = async () => {
     return await api
@@ -93,30 +95,41 @@ const Todos = () => {
       .catch(() => {});
   };
 
-  const handleDeleteTodo = async (id: string) => {
-    await toast
-      .promise(
-        api.delete(`/todos/${id}`, {
-          headers: {
-            Authorization: `Bearer ${state.user.token}`,
-          },
-        }),
-        {
-          loading: "Processando solicitação",
-          success: "Tarefa excluída com sucesso 👌",
-          error: "Ocorreu um erro ao deletar a tarefa 🤯",
-        }
-      )
-      .then(() => {
-        queryClient.invalidateQueries({ queryKey: ["todos"] });
-      })
-      .catch(() => {});
+  const handleDeleteTodo = async (toDelete: boolean) => {
+    if (selectedTodo && toDelete) {
+      await toast
+        .promise(
+          api.delete(`/todos/${selectedTodo.id}`, {
+            headers: {
+              Authorization: `Bearer ${state.user.token}`,
+            },
+          }),
+          {
+            loading: "Processando solicitação",
+            success: "Tarefa excluída com sucesso 👌",
+            error: "Ocorreu um erro ao deletar a tarefa 🤯",
+          }
+        )
+        .then(() => {
+          queryClient.invalidateQueries({ queryKey: ["todos"] });
+        })
+        .catch(() => {})
+        .finally(() => setSelectedTodo(undefined));
+    }
   };
 
   const handleEditTodo = async (id: string) => {
     const index = todos?.map((todo) => todo.id).indexOf(id);
 
     console.log(index);
+  };
+
+  const handleModal = () => {
+    setSelectedTodo(undefined);
+  };
+
+  const deleteTodo = async (todo: Todo) => {
+    setSelectedTodo(todo);
   };
 
   return (
@@ -134,13 +147,23 @@ const Todos = () => {
       {isLoading ? (
         <h2 className="text-3xl my-8">Carregando...</h2>
       ) : todos && todos.length > 0 ? (
-        <MyTodosContainer
-          todo={todo}
-          progressTodo={progressTodo}
-          doneTodo={doneTodo}
-          editTodo={handleEditTodo}
-          deleteTodo={handleDeleteTodo}
-        />
+        <>
+          <MyTodosContainer
+            todo={todo}
+            progressTodo={progressTodo}
+            doneTodo={doneTodo}
+            editTodo={handleEditTodo}
+            deleteTodo={deleteTodo}
+          />
+          {selectedTodo && (
+            <Modal modalStatus={handleModal} handleDeleteTodo={handleDeleteTodo}>
+              <h3 className="tracking-wider">
+                Deseja excluir a tarefa{" "}
+                <span className="font-bold">"{selectedTodo.content}"</span>?
+              </h3>
+            </Modal>
+          )}
+        </>
       ) : (
         <h2 className="text-3xl my-8">Nenhuma tarefa cadastrada</h2>
       )}
