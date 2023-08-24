@@ -1,9 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Button from "../../../components/Button";
 import Form from "../../../components/Form";
 import Input from "../../../components/Input";
+import { Todo } from "../../../types/Todos";
 import InputDiv from "./InputDiv";
 import Label from "./Label";
 import Select from "./Select";
@@ -40,24 +42,35 @@ export type NewTodoFormData = z.infer<typeof formSchema>;
 
 type NewTodoFormProps = {
   newTodo: (data: NewTodoFormData) => void;
+  updateTodo: (data: NewTodoFormData) => void;
+  editTodo: Todo | undefined;
 };
 
-const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
+const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
   const {
     handleSubmit,
     register,
     reset,
+    setValue,
     formState: { isSubmitting },
   } = useForm<NewTodoFormData>({
     resolver: zodResolver(formSchema),
   });
+
+  useEffect(() => {
+    if (editTodo) {
+      setValue("content", editTodo.content);
+      setValue("priority", editTodo.priority);
+      setValue("status", editTodo.status);
+    }
+  }, [setValue, editTodo]);
 
   const { ref: contentRef } = register("content");
   const { ref: priorityRef } = register("priority");
   const { ref: statusRef } = register("status");
 
   const onSubmit = async (data: NewTodoFormData) => {
-    newTodo(data);
+    !editTodo ? newTodo(data) : updateTodo(data);
     reset();
   };
 
@@ -81,11 +94,11 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
           <Label htmlFor="priority">Prioridade:</Label>
           <Select
             id="priority"
-            defaultValue="defaul"
+            defaultValue="default"
             {...register("priority", { required: true })}
             ref={priorityRef}
           >
-            <option value="defaul" disabled hidden>
+            <option value="default" disabled hidden>
               Selecionar
             </option>
             <option value="low">Baixa</option>
@@ -97,11 +110,11 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
           <Label htmlFor="status">Status:</Label>
           <Select
             id="status"
-            defaultValue="defaul"
+            defaultValue="default"
             {...register("status", { required: true })}
             ref={statusRef}
           >
-            <option value="defaul" disabled hidden>
+            <option value="default" disabled hidden>
               Selecionar
             </option>
             <option value="todo">Não iniciada</option>
@@ -111,7 +124,7 @@ const NewTodoForm = ({ newTodo }: NewTodoFormProps) => {
         </InputDiv>
       </div>
       <Button className="w-full lg:w-fit" disabled={isSubmitting}>
-        Adicionar tarefa
+        {!editTodo ? "Adicionar tarefa" : "Atualizar tarefa"}
       </Button>
     </Form>
   );

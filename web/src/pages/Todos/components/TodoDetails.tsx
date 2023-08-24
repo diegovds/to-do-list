@@ -5,12 +5,12 @@ import { Todo } from "../../../types/Todos";
 type TodoDetailsProps = {
   todo: Todo;
   deleteTodo: (todo: Todo) => void;
-  editTodo: (id: string) => void;
+  editTodo: (todo: Todo) => void;
 };
 
 const TodoDetails = ({
   todo,
-  todo: { id, content, priority },
+  todo: { content, priority },
   deleteTodo,
   editTodo,
 }: TodoDetailsProps) => {
@@ -35,7 +35,7 @@ const TodoDetails = ({
         </button>
         <button
           className="flex items-center justify-center rounded-lg text-gray-50 transition-all hover:text-gray-300 disabled:opacity-50"
-          onClick={() => editTodo(id)}
+          onClick={() => editTodo(todo)}
         >
           <MdEdit size={23} />
         </button>

@@ -18,7 +18,8 @@ const Todos = () => {
   const [todo, setTodo] = useState<Todo[]>();
   const [progressTodo, setProgressTodo] = useState<Todo[]>();
   const [doneTodo, setDoneTodo] = useState<Todo[]>();
-  const [selectedTodo, setSelectedTodo] = useState<Todo | undefined>(undefined);
+  const [deletedTodo, setDeletedTodo] = useState<Todo | undefined>(undefined);
+  const [editedTodo, setEditedTodo] = useState<Todo | undefined>(undefined);
 
   const getTodos = async () => {
     return await api
@@ -95,11 +96,44 @@ const Todos = () => {
       .catch(() => {});
   };
 
+  const handleUpdateTodo = async ({
+    content,
+    priority,
+    status,
+  }: NewTodoFormData) => {
+    await toast
+      .promise(
+        api.put(
+          `/todos/${editedTodo?.id}`,
+          {
+            content,
+            priority,
+            status,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${state.user.token}`,
+            },
+          }
+        ),
+        {
+          loading: "Processando solicitação",
+          success: "Tarefa atualizada com sucesso 👌",
+          error: "Ocorreu um erro ao atualizar a tarefa 🤯",
+        }
+      )
+      .then(() => {
+        queryClient.invalidateQueries({ queryKey: ["todos"] });
+      })
+      .catch(() => {})
+      .finally(() => setEditedTodo(undefined));
+  };
+
   const handleDeleteTodo = async (toDelete: boolean) => {
-    if (selectedTodo && toDelete) {
+    if (deletedTodo && toDelete) {
       await toast
         .promise(
-          api.delete(`/todos/${selectedTodo.id}`, {
+          api.delete(`/todos/${deletedTodo.id}`, {
             headers: {
               Authorization: `Bearer ${state.user.token}`,
             },
@@ -114,22 +148,20 @@ const Todos = () => {
           queryClient.invalidateQueries({ queryKey: ["todos"] });
         })
         .catch(() => {})
-        .finally(() => setSelectedTodo(undefined));
+        .finally(() => setDeletedTodo(undefined));
     }
   };
 
-  const handleEditTodo = async (id: string) => {
-    const index = todos?.map((todo) => todo.id).indexOf(id);
-
-    console.log(index);
-  };
-
   const handleModal = () => {
-    setSelectedTodo(undefined);
+    setDeletedTodo(undefined);
   };
 
-  const deleteTodo = async (todo: Todo) => {
-    setSelectedTodo(todo);
+  const deleteTodo = (todo: Todo) => {
+    setDeletedTodo(todo);
+  };
+
+  const editTodo = (todo: Todo) => {
+    setEditedTodo(todo);
   };
 
   return (
@@ -143,7 +175,11 @@ const Todos = () => {
         <Button onClick={handleLogout}>Sair</Button>
       </div>
       <div className="border-b mt-5 border-b-gray-100" />
-      <NewTodoForm newTodo={handleNewTodo} />
+      <NewTodoForm
+        newTodo={handleNewTodo}
+        editTodo={editedTodo}
+        updateTodo={handleUpdateTodo}
+      />
       {isLoading ? (
         <h2 className="text-3xl my-8">Carregando...</h2>
       ) : todos && todos.length > 0 ? (
@@ -152,14 +188,17 @@ const Todos = () => {
             todo={todo}
             progressTodo={progressTodo}
             doneTodo={doneTodo}
-            editTodo={handleEditTodo}
+            editTodo={editTodo}
             deleteTodo={deleteTodo}
           />
-          {selectedTodo && (
-            <Modal modalStatus={handleModal} handleDeleteTodo={handleDeleteTodo}>
+          {deletedTodo && (
+            <Modal
+              modalStatus={handleModal}
+              handleDeleteTodo={handleDeleteTodo}
+            >
               <h3 className="tracking-wider">
                 Deseja excluir a tarefa{" "}
-                <span className="font-bold">"{selectedTodo.content}"</span>?
+                <span className="font-bold">"{deletedTodo.content}"</span>?
               </h3>
             </Modal>
           )}
