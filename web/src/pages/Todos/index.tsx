@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useInView } from "framer-motion";
+import { AnimatePresence, useInView } from "framer-motion";
 import Cookies from "js-cookie";
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -12,7 +12,6 @@ import { UserActions } from "../../types/reducerActionType";
 import Modal from "./components/Modal";
 import MyTodosContainer from "./components/MyTodosContainer";
 import NewTodoForm, { NewTodoFormData } from "./components/NewTodoForm";
-import { AnimatePresence } from "framer-motion";
 
 const Todos = () => {
   const { state, dispatch } = useContext(Context);
@@ -176,7 +175,10 @@ const Todos = () => {
 
   return (
     <section className="container">
-      <div className="flex justify-between items-center pt-5">
+      <div
+        className="flex justify-between items-center py-5 mb-8 border-b border-b-gray-400"
+        ref={refNewTodoForm}
+      >
         <SectionHeader
           className="flex-1 items-start"
           title={`Olá, ${state.user.name}`}
@@ -184,7 +186,6 @@ const Todos = () => {
         />
         <Button onClick={handleLogout}>Sair</Button>
       </div>
-      <div className="border-b mt-5 border-b-gray-100" ref={refNewTodoForm} />
       <NewTodoForm
         newTodo={handleNewTodo}
         editTodo={editedTodo}
@@ -201,18 +202,22 @@ const Todos = () => {
             editTodo={editTodo}
             deleteTodo={deleteTodo}
           />
-          <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
-          {deletedTodo && (
-            <Modal
-              modalStatus={handleModal}
-              handleDeleteTodo={handleDeleteTodo}
-            >
-              <h3 className="tracking-wider truncate">
-                Deseja excluir a tarefa{" "}
-                <span className="font-bold">"{deletedTodo.content}"</span>?
-              </h3>
-            </Modal>
-          )}
+          <AnimatePresence
+            initial={false}
+            mode="wait"
+            onExitComplete={() => null}
+          >
+            {deletedTodo && (
+              <Modal
+                modalStatus={handleModal}
+                handleDeleteTodo={handleDeleteTodo}
+              >
+                <h3 className="tracking-wider truncate">
+                  Deseja excluir a tarefa{" "}
+                  <span className="font-bold">"{deletedTodo.content}"</span>?
+                </h3>
+              </Modal>
+            )}
           </AnimatePresence>
         </>
       ) : (

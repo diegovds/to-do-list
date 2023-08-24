@@ -92,7 +92,7 @@ const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
 
   return (
     <Form
-      className="mt-10 w-full md:w-full lg:w-full lg:flex-row min-h-min"
+      className="w-full md:w-full lg:w-full lg:flex-row min-h-min"
       id="form"
       onSubmit={handleSubmit(onSubmit)}
     >
