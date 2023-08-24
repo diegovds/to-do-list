@@ -19,7 +19,7 @@ const MyTodosContainer = ({
 }: MyTodosContainerProps) => {
   return (
     <>
-      <h2 className="text-3xl my-8">Tarefas adicionadas:</h2>
+      <h2 className="text-2xl my-8">Tarefas adicionadas:</h2>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-5 items-start">
         <TodosContainer title="Não iniciada" todoLength={todo?.length}>
           {todo &&

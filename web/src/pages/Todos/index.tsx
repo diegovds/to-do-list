@@ -182,9 +182,11 @@ const Todos = () => {
         <SectionHeader
           className="flex-1 items-start"
           title={`Olá, ${state.user.name}`}
-          description="Texto teste"
+          description="Aqui você pode adicionar e gerenciar as suas tarefas"
         />
-        <Button onClick={handleLogout}>Sair</Button>
+        <Button className="min-w-[80px]" onClick={handleLogout}>
+          Sair
+        </Button>
       </div>
       <NewTodoForm
         newTodo={handleNewTodo}
@@ -192,7 +194,7 @@ const Todos = () => {
         updateTodo={handleUpdateTodo}
       />
       {isLoading ? (
-        <h2 className="text-3xl my-8">Carregando...</h2>
+        <h2 className="text-2xl my-8">Carregando...</h2>
       ) : todos && todos.length > 0 ? (
         <>
           <MyTodosContainer
@@ -221,7 +223,7 @@ const Todos = () => {
           </AnimatePresence>
         </>
       ) : (
-        <h2 className="text-3xl my-8">Nenhuma tarefa cadastrada</h2>
+        <h2 className="text-2xl my-8">Nenhuma tarefa cadastrada</h2>
       )}
     </section>
   );
