@@ -3,11 +3,13 @@ import Cookies from "js-cookie";
 import decode from "jwt-decode";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
 import Input from "../../components/Input";
+import InputErrorDiv from "../../components/InputErrorDiv";
 import Link from "../../components/Link";
 import SectionHeader from "../../components/SectionHeader";
 import { Context } from "../../contexts/Context";
@@ -17,8 +19,10 @@ import { UserActions } from "../../types/reducerActionType";
 import { User } from "../../types/user";
 
 const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: z.string().email({ message: "E-mail inválido" }),
+  password: z
+    .string()
+    .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -30,7 +34,7 @@ const Signin = () => {
   const {
     handleSubmit,
     register,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
@@ -71,32 +75,39 @@ const Signin = () => {
 
         return navigate("/todos");
       })
-      .catch(() => {});
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
 
   return (
     <section className="container flex min-h-screen justify-center items-center py-10">
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form className="gap-2" onSubmit={handleSubmit(onSubmit)}>
         <SectionHeader
+          className="mb-1"
           title="Entrar"
           description="Insira as suas credenciais"
         />
-        <Input
-          type="text"
-          placeholder="E-mail"
-          autoFocus
-          disabled={isSubmitting}
-          {...register("email", { required: true })}
-          ref={emailRef}
-        />
-        <Input
-          type="password"
-          placeholder="Senha"
-          disabled={isSubmitting}
-          {...register("password", { required: true })}
-          ref={passwordRef}
-        />
-        <Button className="w-full my-3" disabled={isSubmitting}>
+        <InputErrorDiv errorMessage={errors.email?.message}>
+          <Input
+            type="text"
+            placeholder="E-mail"
+            autoFocus
+            disabled={isSubmitting}
+            {...register("email", { required: true })}
+            ref={emailRef}
+          />
+        </InputErrorDiv>
+        <InputErrorDiv errorMessage={errors.password?.message}>
+          <Input
+            type="password"
+            placeholder="Senha"
+            disabled={isSubmitting}
+            {...register("password", { required: true })}
+            ref={passwordRef}
+          />
+        </InputErrorDiv>
+        <Button className="w-full mb-3" disabled={isSubmitting}>
           Login
         </Button>
         <div className="flex flex-col items-center xsm:flex-row gap-1">
