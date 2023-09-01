@@ -26,6 +26,12 @@ export async function authRoutes(app: FastifyInstance) {
       },
     })
 
+    if (user && name) {
+      return reply.status(400).send({
+        message: 'Email já cadastrado',
+      })
+    }
+
     if (user) {
       passwordVerify = await app.bcrypt.compare(password, user.password)
 
@@ -60,6 +66,12 @@ export async function authRoutes(app: FastifyInstance) {
       )
 
       return { token }
+    }
+
+    if (!user) {
+      return reply.status(404).send({
+        message: 'Usuário não cadastrado.',
+      })
     }
 
     return reply.status(400).send({ message: 'Ocorreu um erro no servidor.' })
