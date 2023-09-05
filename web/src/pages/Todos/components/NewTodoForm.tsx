@@ -44,9 +44,15 @@ type NewTodoFormProps = {
   newTodo: (data: NewTodoFormData) => void;
   updateTodo: (data: NewTodoFormData) => void;
   editTodo: Todo | undefined;
+  editCancel: (data: undefined) => void;
 };
 
-const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
+const NewTodoForm = ({
+  newTodo,
+  editTodo,
+  editCancel,
+  updateTodo,
+}: NewTodoFormProps) => {
   const [modifiedForm, setModifiedForm] = useState(0);
   const {
     handleSubmit,
@@ -67,6 +73,10 @@ const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
       setValue("content", editTodo.content);
       setValue("priority", editTodo.priority);
       setValue("status", editTodo.status);
+    } else {
+      setValue("content", "");
+      setValue("priority", "default");
+      setValue("status", "default");
     }
   }, [setValue, editTodo]);
 
@@ -78,6 +88,8 @@ const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
       watchAllFields.priority === editTodo.priority ? cont++ : 0;
 
       setModifiedForm(cont);
+    } else {
+      setModifiedForm(0);
     }
   }, [editTodo, watchAllFields]);
 
@@ -149,6 +161,14 @@ const NewTodoForm = ({ newTodo, editTodo, updateTodo }: NewTodoFormProps) => {
           </Select>
         </InputDiv>
       </div>
+      {editTodo && (
+        <div
+          className="w-full lg:w-fit flex items-center cursor-pointer justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-gray-50 transition-all hover:bg-blue-500 disabled:opacity-50"
+          onClick={() => editCancel(undefined)}
+        >
+          Cancelar
+        </div>
+      )}
       <Button
         className="w-full lg:w-fit"
         disabled={isSubmitting || modifiedForm === 3 ? true : false}

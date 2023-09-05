@@ -160,6 +160,10 @@ const Todos = () => {
     setEditedTodo(todo);
   };
 
+  const editCancel = (todo: undefined) => {
+    setEditedTodo(todo);
+  };
+
   return (
     <section className="container">
       <div
@@ -179,6 +183,7 @@ const Todos = () => {
         newTodo={handleNewTodo}
         editTodo={editedTodo}
         updateTodo={handleUpdateTodo}
+        editCancel={editCancel}
       />
       {isLoading ? (
         <h2 className="text-2xl my-8">Carregando...</h2>
