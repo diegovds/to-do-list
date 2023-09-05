@@ -30,6 +30,26 @@ const bodySchema = z
     },
   )
 
+const GetTodoByStatus = async (userId: string, status: string) => {
+  return await prisma.todo.findMany({
+    where: {
+      AND: [
+        {
+          userId,
+        },
+        {
+          status: {
+            equals: status,
+          },
+        },
+      ],
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+}
+
 export async function todosRoute(app: FastifyInstance) {
   app.addHook('preHandler', async (request) => {
     await request.jwtVerify()
@@ -51,16 +71,11 @@ export async function todosRoute(app: FastifyInstance) {
   })
 
   app.get('/todos', async (request) => {
-    const todos = await prisma.todo.findMany({
-      where: {
-        userId: request.user.sub,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    })
+    const todo = await GetTodoByStatus(request.user.sub, 'todo')
+    const progress = await GetTodoByStatus(request.user.sub, 'progress')
+    const done = await GetTodoByStatus(request.user.sub, 'done')
 
-    return { todos }
+    return { todo, progress, done }
   })
 
   app.delete('/todos/:id', async (request, reply) => {
