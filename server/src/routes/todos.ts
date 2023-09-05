@@ -45,7 +45,7 @@ const GetTodoByStatus = async (userId: string, status: string) => {
       ],
     },
     orderBy: {
-      createdAt: 'desc',
+      updatedAt: 'desc',
     },
   })
 }
