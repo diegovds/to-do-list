@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, useInView } from "framer-motion";
 import Cookies from "js-cookie";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import Button from "../../components/Button";
 import SectionHeader from "../../components/SectionHeader";
@@ -16,9 +16,6 @@ import NewTodoForm, { NewTodoFormData } from "./components/NewTodoForm";
 const Todos = () => {
   const { state, dispatch } = useContext(Context);
   const queryClient = useQueryClient();
-  const [todo, setTodo] = useState<Todo[]>();
-  const [progressTodo, setProgressTodo] = useState<Todo[]>();
-  const [doneTodo, setDoneTodo] = useState<Todo[]>();
   const [deletedTodo, setDeletedTodo] = useState<Todo | undefined>(undefined);
   const [editedTodo, setEditedTodo] = useState<Todo | undefined>(undefined);
 
@@ -32,23 +29,13 @@ const Todos = () => {
           Authorization: `Bearer ${state.user.token}`,
         },
       })
-      .then((response) => response.data.todos);
+      .then((response) => response.data);
   };
 
   const { data: todos, isLoading } = useQuery({
     queryKey: ["todos"],
     queryFn: getTodos,
   });
-
-  useEffect(() => {
-    const todo = todos?.filter((todo) => todo.status === "todo");
-    const progress = todos?.filter((todo) => todo.status === "progress");
-    const done = todos?.filter((todo) => todo.status === "done");
-
-    setTodo(todo);
-    setProgressTodo(progress);
-    setDoneTodo(done);
-  }, [todos]);
 
   const handleLogout = () => {
     Cookies.remove("token");
@@ -195,12 +182,15 @@ const Todos = () => {
       />
       {isLoading ? (
         <h2 className="text-2xl my-8">Carregando...</h2>
-      ) : todos && todos.length > 0 ? (
+      ) : todos &&
+        (todos.todo.length > 0 ||
+          todos.progress.length > 0 ||
+          todos.done.length > 0) ? (
         <>
           <MyTodosContainer
-            todo={todo}
-            progressTodo={progressTodo}
-            doneTodo={doneTodo}
+            todo={todos.todo}
+            progressTodo={todos.progress}
+            doneTodo={todos.done}
             editTodo={editTodo}
             deleteTodo={deleteTodo}
           />

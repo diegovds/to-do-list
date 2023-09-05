@@ -9,5 +9,7 @@ export type Todo = {
 }
 
 export type Todos = {
-    todos: Todo[]
+    todo: Todo[],
+    progress: Todo[],
+    done: Todo[],
 }
