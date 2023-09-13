@@ -21,7 +21,7 @@ const TodosContainer = ({
       className={cn("bg-card shadow-card rounded-lg p-5", className)}
       {...props}
     >
-      <h3 className="text-center text-base font-semibold tracking-wider">
+      <h3 className="text-center text-xs sm:text-sm font-semibold tracking-wider">
         {title}
       </h3>
       <div
