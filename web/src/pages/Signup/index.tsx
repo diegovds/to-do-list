@@ -95,7 +95,7 @@ const Signup = () => {
   };
 
   return (
-    <section className="container flex min-h-screen justify-center items-center py-10">
+    <section className="container flex flex-1 justify-center items-center py-10">
       <Form className="gap-2" onSubmit={handleSubmit(onSubmit)}>
         <SectionHeader
           className="mb-1"
