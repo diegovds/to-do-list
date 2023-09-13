@@ -111,8 +111,8 @@ const Signin = () => {
           Login
         </Button>
         <div className="flex flex-col items-center xsm:flex-row gap-1">
-          <p className="text-sm">Ainda não possui uma conta?</p>
-          <Link className="underline text-sm" to={`/signup`}>
+          <p>Ainda não possui uma conta?</p>
+          <Link className="underline" to={`/signup`}>
             Clique aqui
           </Link>
         </div>

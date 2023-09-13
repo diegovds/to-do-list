@@ -187,7 +187,7 @@ const Todos = () => {
         editCancel={editCancel}
       />
       {isLoading ? (
-        <h2 className="text-2xl my-8">Carregando...</h2>
+        <h2 className="text-xl my-8">Carregando...</h2>
       ) : todos &&
         (todos.todo.length > 0 ||
           todos.progress.length > 0 ||
@@ -219,7 +219,7 @@ const Todos = () => {
           </AnimatePresence>
         </>
       ) : (
-        <h2 className="text-2xl my-8">Nenhuma tarefa cadastrada</h2>
+        <h2 className="text-xl my-8">Nenhuma tarefa cadastrada</h2>
       )}
     </section>
   );

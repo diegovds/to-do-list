@@ -143,8 +143,8 @@ const Signup = () => {
           Criar conta
         </Button>
         <div className="flex flex-col items-center xsm:flex-row gap-1">
-          <p className="text-sm">Já possui uma conta?</p>
-          <Link className="underline text-sm" to={`/signin`}>
+          <p>Já possui uma conta?</p>
+          <Link className="underline" to={`/signin`}>
             Clique aqui
           </Link>
         </div>

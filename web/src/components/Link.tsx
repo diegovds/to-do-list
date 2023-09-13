@@ -8,7 +8,7 @@ const Link = ({ className, children, ...props }: linkProps) => {
   return (
     <Link_
       className={cn(
-        "flex items-center gap-2 text-base transition-colors hover:text-darker",
+        "flex items-center gap-2 transition-colors hover:text-darker",
         className
       )}
       {...props}
