@@ -14,8 +14,8 @@ const formSchema = z
   .object({
     content: z
       .string()
-      .min(5, { message: "Content deve ter no mínimo 5 caracteres" })
-      .max(300, { message: "Content deve ter no máximo 300 caracteres" }),
+      .min(5, { message: "A tarefa precisa ter no mínimo 5 caracteres" })
+      .max(300, { message: "Máximo de caracteres atingidos." }),
     priority: z.string(),
     status: z.string(),
   })
@@ -26,6 +26,7 @@ const formSchema = z
       data.priority === "low",
     {
       message: "Priority deve ser high, medium, ou low.",
+      path: ["priority"],
     }
   )
   .refine(
@@ -35,6 +36,7 @@ const formSchema = z
       data.status === "done",
     {
       message: "Status deve ser todo, progress ou done.",
+      path: ["status"],
     }
   );
 
@@ -60,13 +62,23 @@ const NewTodoForm = ({
     reset,
     setValue,
     watch,
-
-    formState: { isSubmitting },
+    setFocus,
+    formState: { isSubmitting, errors },
   } = useForm<NewTodoFormData>({
     resolver: zodResolver(formSchema),
   });
 
   const watchAllFields = watch();
+
+  useEffect(() => {
+    if (errors.priority) {
+      setFocus("priority");
+    }
+
+    if (errors.status) {
+      setFocus("status");
+    }
+  }, [errors, setFocus]);
 
   useEffect(() => {
     if (editTodo) {
