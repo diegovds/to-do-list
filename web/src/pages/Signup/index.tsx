@@ -18,23 +18,18 @@ import { auth } from "../../types/auth";
 import { UserActions } from "../../types/reducerActionType";
 import { User } from "../../types/user";
 
-const formSchema = z
-  .object({
-    name: z
-      .string()
-      .min(2, { message: "O nome deve ter pelo menos 2 caracteres" }),
-    email: z.string().email({ message: "E-mail inválido" }),
-    password: z
-      .string()
-      .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
-    passwordConfirmation: z
-      .string()
-      .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
-  })
-  .refine((data) => data.password === data.passwordConfirmation, {
-    message: "as senhas precisam ser iguais",
-    path: ["passwordCheck"],
-  });
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(2, { message: "O nome deve ter pelo menos 2 caracteres" }),
+  email: z.string().email({ message: "E-mail inválido" }),
+  password: z
+    .string()
+    .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
+  passwordConfirmation: z
+    .string()
+    .min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
+});
 
 type FormData = z.infer<typeof formSchema>;
 
@@ -46,6 +41,8 @@ const Signup = () => {
     handleSubmit,
     register,
     formState: { isSubmitting, errors },
+    watch,
+    setError,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
@@ -55,43 +52,53 @@ const Signup = () => {
   const { ref: passwordRef } = register("password");
   const { ref: passwordConfirmationRef } = register("passwordConfirmation");
 
+  const watchPassword = watch("password");
+  const watchPasswordConfirmation = watch("passwordConfirmation");
+
   const onSubmit = async ({ name, email, password }: FormData) => {
-    await api
-      .post<auth>("/auth", {
-        name,
-        email,
-        password,
-      })
-      .then((res) => {
-        const token = res.data.token;
-        const cookieExpiresInSeconds = 60 * 60 * 24 * 30;
+    if (watchPassword === watchPasswordConfirmation) {
+      await api
+        .post<auth>("/auth", {
+          name,
+          email,
+          password,
+        })
+        .then((res) => {
+          const token = res.data.token;
+          const cookieExpiresInSeconds = 60 * 60 * 24 * 30;
 
-        Cookies.set("token", token, {
-          expires: cookieExpiresInSeconds,
-          path: "/",
+          Cookies.set("token", token, {
+            expires: cookieExpiresInSeconds,
+            path: "/",
+          });
+
+          const user: User = decode(token);
+
+          dispatch({
+            type: UserActions.setName,
+            payload: {
+              name: user.name,
+            },
+          });
+
+          dispatch({
+            type: UserActions.setToken,
+            payload: {
+              token,
+            },
+          });
+
+          return navigate("/todos");
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
         });
-
-        const user: User = decode(token);
-
-        dispatch({
-          type: UserActions.setName,
-          payload: {
-            name: user.name,
-          },
-        });
-
-        dispatch({
-          type: UserActions.setToken,
-          payload: {
-            token,
-          },
-        });
-
-        return navigate("/todos");
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
+    } else {
+      setError("passwordConfirmation", {
+        type: "manual",
+        message: "As senhas precisam ser iguais.",
       });
+    }
   };
 
   return (
