@@ -25,19 +25,19 @@ const TodoDetails = ({
           : `ring-green-500`
       )}
     >
-      <h1 className="line-clamp-6">{content}</h1>
+      <h1 className="line-clamp-6 tracking-wider">{content}</h1>
       <div className="flex gap-4">
         <button
           className="flex items-center justify-center rounded-lg text-gray-50 transition-all hover:text-gray-300 disabled:opacity-50"
           onClick={() => deleteTodo(todo)}
         >
-          <MdDelete size={23} />
+          <MdDelete size={20} />
         </button>
         <button
           className="flex items-center justify-center rounded-lg text-gray-50 transition-all hover:text-gray-300 disabled:opacity-50"
           onClick={() => editTodo(todo)}
         >
-          <MdEdit size={23} />
+          <MdEdit size={20} />
         </button>
       </div>
     </div>

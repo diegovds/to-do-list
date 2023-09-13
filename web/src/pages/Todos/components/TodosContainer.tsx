@@ -21,7 +21,9 @@ const TodosContainer = ({
       className={cn("bg-card shadow-card rounded-lg p-5", className)}
       {...props}
     >
-      <h3 className="text-center text-base font-bold">{title}</h3>
+      <h3 className="text-center text-base font-semibold tracking-wider">
+        {title}
+      </h3>
       <div
         className={cn("flex flex-col gap-4", todoLength ? "mt-5" : "")}
         ref={animationParent}

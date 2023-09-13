@@ -7,7 +7,7 @@ const Button = ({ children, className, ...props }: ButtonProps) => {
   return (
     <button
       className={cn(
-        "flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-gray-50 transition-all hover:bg-blue-500 disabled:opacity-50",
+        "flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-gray-50 transition-all hover:bg-blue-500 disabled:opacity-50 tracking-wider",
         className
       )}
       {...props}

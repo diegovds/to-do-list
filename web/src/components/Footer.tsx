@@ -13,11 +13,11 @@ const Footer = ({ children, className, ...props }: FooterProps) => {
       )}
       {...props}
     >
-      <span className="flex items-center gap-1.5">
+      <span className="flex items-center gap-1.5 tracking-wider">
         Feito com
         <IoMdHeart size={13} className="text-red-600" />
         por
-        <strong className="font-medium">Diego Viana</strong>
+        <strong className="font-semibold">Diego Viana</strong>
       </span>
       {children}
     </footer>

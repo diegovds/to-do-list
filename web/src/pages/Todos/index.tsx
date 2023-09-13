@@ -3,6 +3,7 @@ import { AnimatePresence, useInView } from "framer-motion";
 import Cookies from "js-cookie";
 import { useContext, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { TbLogout } from "react-icons/tb";
 import Button from "../../components/Button";
 import SectionHeader from "../../components/SectionHeader";
 import { Context } from "../../contexts/Context";
@@ -175,8 +176,8 @@ const Todos = () => {
           title={`Olá, ${state.user.name}`}
           description="Aqui você pode adicionar e gerenciar as suas tarefas"
         />
-        <Button className="min-w-[80px]" onClick={handleLogout}>
-          Sair
+        <Button className="rounded-full" onClick={handleLogout}>
+          <TbLogout size={20} />
         </Button>
       </div>
       <NewTodoForm

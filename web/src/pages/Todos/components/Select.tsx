@@ -8,7 +8,7 @@ const Select = forwardRef(
     return (
       <select
         className={cn(
-          "focus: h-14 w-full rounded-lg bg-darker p-4 text-gray-50 outline-none ring-darker placeholder:text-gray-400 focus:ring-2",
+          "focus: h-14 w-full rounded-lg bg-darker p-4 text-gray-50 outline-none ring-darker placeholder:text-gray-400 focus:ring-2 tracking-wider",
           className
         )}
         ref={ref as RefObject<HTMLSelectElement>}
