@@ -176,7 +176,10 @@ const Todos = () => {
           title={`Olá, ${state.user.name}`}
           description="Aqui você pode adicionar e gerenciar as suas tarefas"
         />
-        <Button className="rounded-full" onClick={handleLogout}>
+        <Button
+          className="rounded-full bg-card hover:bg-card hover:bg-opacity-75"
+          onClick={handleLogout}
+        >
           <TbLogout size={20} />
         </Button>
       </div>
