@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
+import FormSection from "../../components/FormSection";
 import Input from "../../components/Input";
 import InputErrorDiv from "../../components/InputErrorDiv";
 import Link from "../../components/Link";
@@ -81,7 +82,7 @@ const Signin = () => {
   };
 
   return (
-    <section className="container flex flex-1 justify-center items-center py-10">
+    <FormSection>
       <Form className="gap-2" onSubmit={handleSubmit(onSubmit)}>
         <SectionHeader
           className="mb-1"
@@ -117,7 +118,7 @@ const Signin = () => {
           </Link>
         </div>
       </Form>
-    </section>
+    </FormSection>
   );
 };
 
