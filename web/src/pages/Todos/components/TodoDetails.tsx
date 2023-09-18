@@ -1,8 +1,10 @@
+import { motion } from "framer-motion";
+import { ComponentProps } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { cn } from "../../../libs/utils";
 import { Todo } from "../../../types/Todos";
 
-type TodoDetailsProps = {
+type TodoDetailsProps = ComponentProps<typeof motion.div> & {
   todo: Todo;
   deleteTodo: (todo: Todo) => void;
   editTodo: (todo: Todo) => void;
@@ -13,9 +15,10 @@ const TodoDetails = ({
   todo: { content, priority },
   deleteTodo,
   editTodo,
+  ...props
 }: TodoDetailsProps) => {
   return (
-    <div
+    <motion.div
       className={cn(
         `flex justify-between items-center gap-4 p-5 rounded-xl bg-darker ring-2`,
         priority === "high"
@@ -24,6 +27,9 @@ const TodoDetails = ({
           ? `ring-yellow-400`
           : `ring-green-500`
       )}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      {...props}
     >
       <h1 className="line-clamp-6 tracking-wider">{content}</h1>
       <div className="flex gap-4">
@@ -40,7 +46,7 @@ const TodoDetails = ({
           <MdEdit size={20} />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

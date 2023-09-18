@@ -19,38 +19,43 @@ const MyTodosContainer = ({
 }: MyTodosContainerProps) => {
   return (
     <>
-      <h2 className="my-8 text-xl font-bold tracking-wider">Tarefas adicionadas:</h2>
+      <h2 className="my-8 text-xl font-bold tracking-wider">
+        Tarefas adicionadas:
+      </h2>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-10 items-start">
         <TodosContainer title="Não iniciada" todoLength={todo?.length}>
           {todo &&
-            todo.map((todo) => (
+            todo.map((todo, index) => (
               <TodoDetails
                 key={todo.id}
                 todo={todo}
                 deleteTodo={deleteTodo}
                 editTodo={editTodo}
+                transition={{ delay: index * 0.35 }}
               />
             ))}
         </TodosContainer>
         <TodosContainer title="Em progresso" todoLength={progressTodo?.length}>
           {progressTodo &&
-            progressTodo.map((todo) => (
+            progressTodo.map((todo, index) => (
               <TodoDetails
                 key={todo.id}
                 todo={todo}
                 deleteTodo={deleteTodo}
                 editTodo={editTodo}
+                transition={{ delay: index * 0.35 }}
               />
             ))}
         </TodosContainer>
         <TodosContainer title="Finalizada" todoLength={doneTodo?.length}>
           {doneTodo &&
-            doneTodo.map((todo) => (
+            doneTodo.map((todo, index) => (
               <TodoDetails
                 key={todo.id}
                 todo={todo}
                 deleteTodo={deleteTodo}
                 editTodo={editTodo}
+                transition={{ delay: index * 0.35 }}
               />
             ))}
         </TodosContainer>
