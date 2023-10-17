@@ -5,6 +5,7 @@ import { Context } from "./contexts/Context";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Todos from "./pages/Todos";
+import WelcomePage from "./pages/WelcomePage";
 
 const Router = () => {
   const { state } = useContext(Context);
@@ -16,7 +17,7 @@ const Router = () => {
           <Routes>
             <Route
               path="/"
-              element={!state.user.token ? <Signin /> : <Todos />}
+              element={!state.user.token ? <WelcomePage /> : <Todos />}
             />
             <Route
               path="/signin"
@@ -28,11 +29,11 @@ const Router = () => {
             />
             <Route
               path="/todos"
-              element={!state.user.token ? <Signin /> : <Todos />}
+              element={!state.user.token ? <WelcomePage /> : <Todos />}
             />
             <Route
               path="*"
-              element={!state.user.token ? <Signin /> : <Todos />}
+              element={!state.user.token ? <WelcomePage /> : <Todos />}
             />
           </Routes>
         </div>
