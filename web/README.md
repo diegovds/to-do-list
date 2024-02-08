@@ -29,7 +29,7 @@ O Front-end do My To-Do List foi desenvolvido utilizando o framework Vite e Tail
 git clone https://github.com/diegovds/to-do-list.git
 ```
 
-- Acesse o diretório server usando:
+- Acesse o diretório web usando:
 
 ```
 cd .\web\
